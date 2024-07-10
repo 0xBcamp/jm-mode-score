@@ -1,13 +1,26 @@
-# Challenge
-- What is the problem that you are addressing?  Who is it a problem for?
+# Mode Score
 
-# Solution
-- What would an ideal solution look like? 
+## Problem Statement
+- **Fragmented Ecosystems**: Users struggle to manage assets spread across various platforms.
+- **Underutilized Assets**: Idle assets miss opportunities for generating returns.
+- **Complex Investment Decisions**: New DeFi users find it challenging to optimize capital efficiency across ecosystems.
 
-# Why it Matters
-- How does your solution impact your target audience?  Does it save time, make money, save money?
+## Solution
+**Idle Score Dapp:**
+- **Wallet Connectivity**: Connect your wallet or paste your address to receive an efficiency score.
+- **Capital Efficiency Scoring**: Scores range from 0 to 100, evaluating asset utilization across ecosystems.
+- **Investment Recommendations**: Suggests opportunities like Mode staking or yield farming to invest idle capital.
 
-## Examples
-- Homechain https://github.com/0xBcamp/March-2023-Lima
-- SmartVault https://github.com/0xBcamp/March-2023-Sierra
-- Blockbadge https://github.com/0xBcamp/Sept23_Apprenticeship_Certification
+## Additional Information
+**Importance of Capital Efficiency:**
+- **Enhanced Portfolio Management**: Optimizes investments using DeFi features.
+- **User-Friendly Interface**: Simplifies asset management and informed decision-making.
+- **Ecosystem Benefits**: Increases utilization of idle Total Value Locked (TVL).
+
+## Milestones/Features:
+- **Connect to Wallet**: Link your digital wallet to the dApp.
+- **Capital Efficiency Scoring**: Evaluate asset utilization.
+- **Personalized Investment Recommendations**: Get tailored suggestions to improve efficiency.
+
+## Conclusion
+Mode Score is a dApp that optimizes digital assets across ecosystems with a capital efficiency score and a user-friendly interface. It integrates wallets, recommends opportunities, and assists newcomers to DeFi.
