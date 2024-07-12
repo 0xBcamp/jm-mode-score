@@ -1,0 +1,82 @@
+{
+    "data": [
+        {
+            "credit_line": "credit score",
+            "score_range": [300, 500, 560, 650, 740, 800, 870, 900],
+            "qualitative_range": ["out of bounds", "very poor", "poor", "fair", "good", "very good", "excellent", "exceptional"],
+            "minimum_requirements": {
+                "covalent": {
+                    "thresholds": {
+                        "coinmarketcap_currencies": 100,
+                        "erc_tokens": ["ETH", "WETH", "USDT", "MATIC", "MKR", "BAT", "CRO", "USDC", "TUSD", "REP", "OMG", "LINK", "PAX", "HOT", "ZRX", "IOST", "HT", "AOA", "ENJ", "MCO", "NEXO", "NET", "GUSD", "ENG", "LAMB"]
+                    },
+                    "scores": {
+                        "models": {
+                            "credibility": {
+                                "weight": 0.1,
+                                "metrics": {
+                                    "kyc": 0.3,
+                                    "inception": 0.7
+                                }
+                            },
+                            "wealth": {
+                                "weight": 0.33,
+                                "metrics": {
+                                    "capital_now": 0.25,
+                                    "capital_now_adj": 0.55,
+                                    "volume_per_txn": 0.20
+                                }
+                            },
+                            "traffic": {
+                                "weight": 0.37,
+                                "metrics": {
+                                    "credit":0.14,
+                                    "debit": 0.14,
+                                    "dust": 0.14,
+                                    "run_balance": 0.40,
+                                    "frequency": 0.18
+                                }
+                            },
+                            "stamina": {
+                                "weight": 0.2,
+                                "metrics": {
+                                    "coins": 0.50,
+                                    "methods": 0.45,
+                                    "dexterity": 0.05
+                                }
+                            }
+                        }
+                    },
+                    "params": {
+                        "metrics": {
+                            "count_to_four": [1, 2, 3],
+                            "volume_now": [0.25, 0.9, 4, 8, 13, 15],
+                            "volume_per_txn": [1.4, 3.5, 5.3, 6.3, 7, 8],
+                            "duration": [90, 120, 150, 180, 210, 270],
+                            "count_operations": [10, 20, 33, 40, 45, 50],
+                            "cred_deb": [3.5, 7.5, 10, 13, 15.5, 20],
+                            "frequency_txn": [0.3, 0.5, 0.8, 1.3, 2, 4],
+                            "avg_run_bal": [5, 19, 38, 59, 73, 85],
+                            "due_date": [3, 4, 5]
+                        },
+                        "matrices": {
+                            "mtx_traffic": {
+                                "shape": [7, 7],
+                                "scalars": [4, 12]
+                            },
+                            "mtx_stamina": {
+                                "shape": [4, 7],
+                                "scalars": [7, 8]
+                            }
+                        }
+                    },
+                    "messages": {
+                        "failed": "Could not calculate your credit score since there is either no transaction history associated with your wallet address or your cumulative balance is too low. Please top up your wallet or use a different wallet address.",
+                        "fetcherror": "Unable to retrieve data from your wallet and therefore it could not calculate your credit score. Please use a different wallet address.",
+                        "success": "Congrats, you have successfully obtained a credit score! Your score is {} - {} points."
+                    }
+                }
+            }
+        }
+    ]
+}

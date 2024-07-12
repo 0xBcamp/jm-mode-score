@@ -1,0 +1,32 @@
+# environment variables
+score/.env
+
+# macOS custom attributes
+score/.DS_Store
+
+# python interpreter
+score/**.pyc
+
+# Jupyter Notebook files
+score/**.ipynb
+score/__pycache__
+score/config/__pycache__/
+score/helpers/__pycache__/
+score/market/__pycache__/
+score/routers/__pycache__/
+score/support/__pycache__/
+score/validator/__pycache__/
+score/venv/
+score/workflows/
+score/test/
+
+
+# neglect all covalent-related files
+score/covalent_**
+
+# temporary
+score//temp
+
+# transaction data
+score/covalent_get_balances_or_portfolio.json
+score/covalent_get_transactions.json
