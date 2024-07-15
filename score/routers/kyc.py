@@ -21,7 +21,7 @@ router = APIRouter(
 @router.post('/kyc', status_code=status.HTTP_200_OK, summary='Verify KYC')
 async def credit_score_kyc(request: Request, item: KYC_Item):
     '''
-    Verifies chosen account (Coinbase, Covalent, or Plaid) through set of rules to determine whether KYC or not.
+    Verifies chosen account (Covalent) through set of rules to determine whether KYC or not.
 
     Input:
     - **chosen_validator [string]**: chosen validator
