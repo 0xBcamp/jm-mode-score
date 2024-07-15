@@ -29,7 +29,6 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
     - **eth_address [string]**: eth address
     - **covalent_key [string]**: covalent key
     - **coinmarketcap_key [string]**: coinmarketcap key
-    - **loan_request [integer]**: loan request amount
 
     Output:
     - **[object]**: covalent credit score
