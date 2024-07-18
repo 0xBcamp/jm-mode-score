@@ -10,10 +10,20 @@ RUN apt-get update && \
 ENV CARGO_HOME=/app/.cargo
 ENV CARGO_TARGET_DIR=/app/target
 
+# Create the /app directory
+RUN mkdir -p /app
+
+# Set the working directory
+WORKDIR /app
+
 # Copy application code
 COPY ./app /app
 
 # Ensure directories exist and are writable
 RUN mkdir -p /app/.cargo /app/target && chmod -R 777 /app/.cargo /app/target
 
-WORKDIR /app
+# Install dependencies if required
+# RUN pip install -r requirements.txt
+
+# Run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
