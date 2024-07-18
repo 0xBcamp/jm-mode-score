@@ -10,17 +10,14 @@ RUN apt-get update && \
 ENV CARGO_HOME=/app/.cargo
 ENV CARGO_TARGET_DIR=/app/target
 
-# Create the /app directory
-RUN mkdir -p /app
+# Create necessary directories
+RUN mkdir -p /app/.cargo /app/target
 
-# Set the working directory
-WORKDIR /app
+# Set the working directory to the score directory
+WORKDIR /app/score
 
-# Copy application code from the score directory
-COPY ./score /app
-
-# Ensure directories exist and are writable
-RUN mkdir -p /app/.cargo /app/target && chmod -R 777 /app/.cargo /app/target
+# Ensure directories are writable
+RUN chmod -R 777 /app/.cargo /app/target
 
 # Install dependencies if required
 # RUN pip install -r requirements.txt
