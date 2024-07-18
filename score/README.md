@@ -55,7 +55,7 @@ For testing th application use the Swagger API platform. Running the commands be
 
 ```bash
 cd my-project-name
-uvicorn main:app –reload
+uvicorn main:app –-reload
 ```
 
 > :warning: The app will execute properly, only if you set up a correct and complete `.env` file. <br/>

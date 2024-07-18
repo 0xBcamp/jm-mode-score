@@ -3,3 +3,9 @@ services:
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port 80
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: CARGO_HOME
+        value: /app/.cargo
+      - key: CARGO_TARGET_DIR
+        value: /app/target
