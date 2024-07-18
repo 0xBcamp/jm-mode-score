@@ -112,6 +112,7 @@ typing_extensions==4.2.0
 ujson==5.3.0
 update==0.0.1
 urllib3==1.26.11
+uv==0.2.3
 uvicorn==0.18.2
 uvloop==0.16.0
 watchfiles==0.16.1
