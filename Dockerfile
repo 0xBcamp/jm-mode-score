@@ -4,7 +4,8 @@ FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 RUN apt-get update && \
     apt-get install -y curl && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    source $HOME/.cargo/env
+    export CARGO_HOME=$HOME/.cargo && \
+    export PATH="$CARGO_HOME/bin:$PATH"
 
 # Set environment variables for writable directories
 ENV CARGO_HOME=/app/.cargo
