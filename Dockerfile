@@ -21,7 +21,7 @@ WORKDIR /app/score
 RUN chmod -R 777 /app/.cargo /app/target
 
 # Install dependencies if required
-# RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
