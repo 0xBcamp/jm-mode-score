@@ -16,8 +16,8 @@ RUN mkdir -p /app
 # Set the working directory
 WORKDIR /app
 
-# Copy application code
-COPY ./app /app
+# Copy application code from the score directory
+COPY ./score /app
 
 # Ensure directories exist and are writable
 RUN mkdir -p /app/.cargo /app/target && chmod -R 777 /app/.cargo /app/target
