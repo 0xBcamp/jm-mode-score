@@ -13,12 +13,9 @@ class Covalent_Access(BaseModel):
     covalent_key: str
 
 
-class Loan_Item(BaseModel):
-    loan_request: int
-
 
 class Covalent_Item(
-        Covalent_Access, CoinmarketCap_Access, Loan_Item):
+        Covalent_Access, CoinmarketCap_Access):
     pass
 
 

@@ -1,5 +1,6 @@
 from config.helper import *
 from helpers.helper import *
+from helpers.feedback import *
 from helpers.score import *
 from market.coinmarketcap import *
 from validator.covalent import *
@@ -10,7 +11,6 @@ from sqlalchemy.orm import Session
 from support.database import get_db
 from support.schemas import Covalent_Item
 from support import crud
-import json
 
 
 router = APIRouter(
@@ -44,6 +44,8 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
             raise Exception(configs)
 
         score_range = configs['score_range']
+        qualitative_range = configs['qualitative_range']
+
 
         thresholds = configs['minimum_requirements']['covalent']['thresholds']
         parm = configs['minimum_requirements']['covalent']['params']
@@ -93,7 +95,20 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
         print(f'\033[36m Calculating score ...\033[0m')
         score, feedback = covalent_score(
             score_range, feedback, models, metrics, parm, erc_rank, txn, balances, portfolio)
+        print(f'\033[36m Feedback ...\033[0m', feedback)
+        # keep feedback data
+        print(f'\033[36m Saving parameters ...\033[0m')
+        data = keep_dict(score, feedback)
+        crud.add_event(db, 'covalent', data)
 
+        # update feedback
+        print(f'\033[36m Preparing feedback 1/2 ...\033[0m')
+        message = qualitative_feedback_covalent(
+            messages, score, feedback, score_range, qualitative_range, item.coinmarketcap_key)
+
+        print(f'\033[36m Preparing feedback 2/2 ...\033[0m')
+        feedback = interpret_score_covalent(
+            score, feedback, score_range, qualitative_range)
 
         # return success
         print(f'\033[35;1m Credit score has successfully been calculated.\033[0m')
@@ -101,6 +116,8 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
             'endpoint': '/credit_score/covalent',
             'status': 'success',
             'score': int(score),
+            'message': message,
+            'feedback': feedback
         }
 
     except Exception as e:

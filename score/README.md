@@ -1,5 +1,7 @@
 ## Mode Scoring on Mode Protocol 🔮 :ringed_planet: :mag:
 
+for Proper explanation on how this application works, See [EXPLANATION](./EXPLANATION.md)
+
 NOTE: Instead of Debank i am usinig Covalent(as they support mode network)
 
 NOTE: All data is being tested on ethereum chain, but design in such a way that it can be switch to mode easily(will need top erc20 tokens on the mode network, and other stuffs )
