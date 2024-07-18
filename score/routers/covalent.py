@@ -97,9 +97,9 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
             score_range, feedback, models, metrics, parm, erc_rank, txn, balances, portfolio)
         print(f'\033[36m Feedback ...\033[0m', feedback)
         # keep feedback data
-        print(f'\033[36m Saving parameters ...\033[0m')
-        data = keep_dict(score, feedback)
-        crud.add_event(db, 'covalent', data)
+        # print(f'\033[36m Saving parameters ...\033[0m')
+        # data = keep_dict(score, feedback)
+        # crud.add_event(db, 'covalent', data)
 
         # update feedback
         print(f'\033[36m Preparing feedback 1/2 ...\033[0m')
