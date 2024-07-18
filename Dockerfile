@@ -17,10 +17,14 @@ RUN mkdir -p /app/.cargo /app/target
 # Set the working directory to the score directory
 WORKDIR /app/score
 
+# Copy the source code and requirements file to the container
+COPY score/requirements.txt ./
+COPY score/ ./
+
 # Ensure directories are writable
 RUN chmod -R 777 /app/.cargo /app/target
 
-# Install dependencies if required
+# Install dependencies
 RUN pip install -r requirements.txt
 
 # Run the application
