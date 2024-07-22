@@ -31,7 +31,7 @@ def create_interpret_covalent():
             'score_exist': False,
             'points': None,
             'quality': None,
-            'longevity(days)': None,
+            'longevity_days': None,
             'cum_balance_now': None
         },
         'advice': {
@@ -73,9 +73,9 @@ def interpret_score_covalent(score, feedback, score_range, quality_range):
             interpret['score']['quality'] = quality_range[np.digitize(
                 score, score_range, right=False)]
 
-            if ('longevity(days)' in list(feedback['credibility'].keys())) and \
-                    (feedback['credibility']['longevity(days)']):
-                interpret['score']['longevity(days)'] = feedback['credibility']['longevity(days)']
+            if ('longevity_days' in list(feedback['credibility'].keys())) and \
+                    (feedback['credibility']['longevity_days']):
+                interpret['score']['longevity_days'] = feedback['credibility']['longevity_days']
 
             if 'cum_balance_now' in list(feedback['wealth'].keys()):
                 interpret['score']['cum_balance_now'] = feedback['wealth']['cum_balance_now']
@@ -163,9 +163,9 @@ def qualitative_feedback_covalent(
         """
 
         # Covalent account duration
-        if ('longevity(days)' in all_keys):
+        if ('longevity_days' in all_keys):
             if ('cum_balance_now' in all_keys):
-                lon = feedback['credibility']['longevity(days)']
+                lon = feedback['credibility']['longevity_days']
                 bal = feedback['wealth']['cum_balance_now']
                 msg = msg + f' Your Mode wallet address has been active for {lon} days '\
                     f'and your total balance across all cryptocurrencies is ${bal:,.0f} USD'

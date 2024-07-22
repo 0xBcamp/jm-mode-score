@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from support.database import get_db
 from support.schemas import Covalent_Item
 from support import crud
+import json
 
 
 router = APIRouter(
@@ -62,8 +63,8 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
         txn = covalent_get_transactions(
             item.chainid, item.eth_address, item.covalent_key, False, 500, 0)
 
-       # with open('covalent_get_transactions.json', 'w') as file:
-       #     json.dump(txn, file, indent=2)
+        # with open('covalent_get_transactions.json', 'w') as file:
+        #    json.dump(txn, file, indent=2)
         
         if isinstance(txn, dict) and 'found_error' in txn and txn['found_error']:
             error = txn['error_message']
@@ -73,8 +74,8 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
             item.chainid, item.eth_address, 'balances_v2', item.
             covalent_key)
         
-       # with open('covalent_get_balances_or_portfolio.json', 'w') as file:
-       #     json.dump(balances, file, indent=2)
+        # with open('covalent_get_balances_or_portfolio.json', 'w') as file:
+        #   json.dump(balances, file, indent=2)
         
         if isinstance(balances, dict) and 'found_error' in balances and balances['found_error']:
             error = balances['error_message']
@@ -96,10 +97,11 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
         score, feedback = covalent_score(
             score_range, feedback, models, metrics, parm, erc_rank, txn, balances, portfolio)
         print(f'\033[36m Feedback ...\033[0m', feedback)
+        understandableFeedback = feedback
         # keep feedback data
-        # print(f'\033[36m Saving parameters ...\033[0m')
-        # data = keep_dict(score, feedback)
-        # crud.add_event(db, 'covalent', data)
+        print(f'\033[36m Saving parameters ...\033[0m')
+        data = keep_dict(score, feedback)
+        crud.add_event(db, 'covalent', data) 
 
         # update feedback
         print(f'\033[36m Preparing feedback 1/2 ...\033[0m')
@@ -112,13 +114,25 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
 
         # return success
         print(f'\033[35;1m Credit score has successfully been calculated.\033[0m')
+        response_data = {
+            'endpoint': '/credit_score/covalent',
+            'status': 'success',
+            'score': int(score),
+            'message': message,
+            'feedback': feedback,
+            'explanation': understandableFeedback
+        }
+        return JSONResponse(content=response_data)
+        '''
         return {
             'endpoint': '/credit_score/covalent',
             'status': 'success',
             'score': int(score),
             'message': message,
-            'feedback': feedback
+            'feedback': feedback,
+            'explanation': JSONResponse(content=understandableFeedback)
         }
+        '''
 
     except Exception as e:
         print(f'\033[35;1m Unable to complete credit scoring calculation.\033[0m')

@@ -1,6 +1,6 @@
 # environment variables
 score/.env
-
+score/test.py
 # macOS custom attributes
 score/.DS_Store
 

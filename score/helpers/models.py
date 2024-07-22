@@ -63,7 +63,6 @@ def covalent_stamina(txn, balances, portfolio, feedback, weights, params, erc_ra
     coins, coins_feedback = safe_calculation(stamina_coins_count, balances, feedback, params, erc_rank)
     dexterity, dex_feedback = safe_calculation(stamina_dexterity, portfolio, feedback, params)
 
-    feedback = stamina_loan_duedate(txn, feedback, params)
 
     feedback.update(methods_feedback)
     feedback.update(coins_feedback)

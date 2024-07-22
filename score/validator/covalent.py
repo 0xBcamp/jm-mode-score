@@ -34,6 +34,7 @@ def covalent_get_balances_or_portfolio(chain_id, eth_address, endpoints, api_key
         r = 'JSONDecodeError: invalid Covalent API key'
 
     finally:
+        # print(f'\033[35;1m covalent_get_balances_or_portfolio: {r}\033[0m')
         return r
 
 
@@ -83,4 +84,5 @@ def covalent_get_transactions(chain_id, eth_address, api_key, no_logs, pagesize,
         r = 'JSONDecodeError: invalid Covalent API key'
 
     finally:
+        # print(f'\033[35;1m covalent_get_transactions: {r}\033[0m')
         return r

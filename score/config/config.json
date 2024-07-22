@@ -8,7 +8,8 @@
                 "covalent": {
                     "thresholds": {
                         "coinmarketcap_currencies": 100,
-                        "erc_tokens": ["ETH", "WETH", "USDT", "MATIC", "MKR", "BAT", "CRO", "USDC", "TUSD", "REP", "OMG", "LINK", "PAX", "HOT", "ZRX", "IOST", "HT", "AOA", "ENJ", "MCO", "NEXO", "NET", "GUSD", "ENG", "LAMB"]
+                        "erc_tokens": ["ETH", "WETH", "USDT", "MATIC", "MKR", "BAT", "CRO", "USDC", "TUSD", "REP", "OMG", "LINK", "PAX", "HOT", "ZRX", "IOST", "HT", "AOA", "ENJ", "MCO", "NEXO", "NET", "GUSD", "ENG", "LAMB"],
+                        "mode_erc_tokens": ["EZETH", "ANKR", "ANKRETH", "MODE", "INETH", "INANKRETH", "DUSD", "ION", "MOCHAD", "KIM", "SDUSD", "IONUSDC", "IONUSDT"]
                     },
                     "scores": {
                         "models": {
