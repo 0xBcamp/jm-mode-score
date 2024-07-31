@@ -26,12 +26,16 @@ def covalent_wealth(txn, balances, feedback, weights, params, erc_rank):
     capital_now, cn_feedback = safe_calculation(wealth_capital_now, balances, feedback, params)
     capital_now_adj, cna_feedback = safe_calculation(wealth_capital_now_adjusted, balances, feedback, erc_rank, params)
     volume_per_txn, vpt_feedback = safe_calculation(wealth_volume_per_txn, txn, feedback, params)
+    # staking_balance, sb_feedback = safe_calculation(wealth_staking_balance, staking_data, feedback, params)
+    # yield_returns, yr_feedback = safe_calculation(wealth_yield_farming_returns, yield_data, feedback, params)
 
     feedback.update(cn_feedback)
     feedback.update(cna_feedback)
     feedback.update(vpt_feedback)
+    # feedback.update(sb_feedback)
+    # feedback.update(yr_feedback)
 
-    a = list(weights.values())[2:5]
+    a = list(weights.values())
     b = [capital_now, capital_now_adj, volume_per_txn]
 
     score = dot_product(a, b)
@@ -74,64 +78,3 @@ def covalent_stamina(txn, balances, portfolio, feedback, weights, params, erc_ra
     score = dot_product(a, b)
 
     return score, feedback
-
-"""
-def covalent_credibility(txn, balances, portfolio, feedback, weights, params):
-
-    feedback = fetch_covalent(txn, balances, portfolio, feedback)
-    kyc, feedback = credibility_kyc(txn, balances, feedback)
-    inception, feedback = credibility_oldest_txn(txn, feedback, params)
-
-    a = list(weights.values())[:2]
-    b = [kyc, inception]
-
-    score = dot_product(a, b)
-
-    return score, feedback
-
-
-def covalent_wealth(txn, balances, feedback, weights, params, erc_rank):
-
-    capital_now, feedback = wealth_capital_now(balances, feedback, params)
-    capital_now_adj, feedback = wealth_capital_now_adjusted(balances, feedback, erc_rank, params)
-    volume_per_txn, feedback = wealth_volume_per_txn(txn, feedback, params)
-
-    a = list(weights.values())[2:5]
-    b = [capital_now, capital_now_adj, volume_per_txn]
-
-    score = dot_product(a, b)
-
-    return score, feedback
-
-
-def covalent_traffic(txn, portfolio, feedback, weights, params, erc_rank):
-
-    credit, feedback = traffic_cred_deb(txn, feedback, 'credit', params)
-    debit, feedback = traffic_cred_deb(txn, feedback, 'debit', params)
-    dust, feedback = traffic_dustiness(txn, feedback, params)
-    run_balance, feedback = traffic_running_balance(portfolio, feedback, params, erc_rank)
-    frequency, feedback = traffic_frequency(txn, feedback, params)
-
-    a = list(weights.values())[5:10]
-    b = [credit, debit, frequency, dust, run_balance]
-
-    score = dot_product(a, b)
-
-    return score, feedback
-
-
-def covalent_stamina(txn, balances, portfolio, feedback, weights, params, erc_rank):
-
-    methods, feedback = stamina_methods_count(txn, feedback, params)
-    coins, feedback = stamina_coins_count(balances, feedback, params, erc_rank)
-    dexterity, feedback = stamina_dexterity(portfolio, feedback, params)
-
-    feedback = stamina_loan_duedate(txn, feedback, params)
-
-    a = list(weights.values())[10:]
-    b = [coins, methods, dexterity]
-
-    score = dot_product(a, b)
-
-    return score, feedback
-"""

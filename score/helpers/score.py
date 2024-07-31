@@ -14,6 +14,7 @@ def covalent_score(score_range, feedback, model_weights, metric_weights, params,
     params = covalent_params(params, score_range)
 
     credibility, cred_feedback = safe_calculation(covalent_credibility, txn, balances, portfolio, feedback, metric_weights, params)
+    #wealth, wealth_feedback = safe_calculation(covalent_wealth, txn, balances, staking_data, yield_data, feedback, metric_weights, params, erc_rank)
     wealth, wealth_feedback = safe_calculation(covalent_wealth, txn, balances, feedback, metric_weights, params, erc_rank)
     traffic, traffic_feedback = safe_calculation(covalent_traffic, txn, portfolio, feedback, metric_weights, params, erc_rank)
     stamina, stamina_feedback = safe_calculation(covalent_stamina, txn, balances, portfolio, feedback, metric_weights, params, erc_rank)

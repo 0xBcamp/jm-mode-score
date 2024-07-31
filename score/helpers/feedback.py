@@ -1,6 +1,8 @@
 from market.coinmarketcap import *
 import numpy as np
 from icecream import ic
+import json
+import logging
 
 # Some helper functions
 
@@ -131,7 +133,7 @@ def qualitative_feedback_covalent(
         msg = messages['fetcherror']
         print(f'\033[36m checking if error in msg ...\033[0m')
         return msg
-    # print(f'\033[36m after Failed to fetch ...\033[0m')
+    #print(f'\033[36m after Failed to fetch ...\033[0m')
     # Case #2: User not verified.
     # --> return fetch error when the user has
     # --> flow balance or no txn history
@@ -139,7 +141,8 @@ def qualitative_feedback_covalent(
             feedback['credibility']['verified'] == False:
         msg = messages['failed']
         return msg
-    # print(f'\033[36m After credibility ...\033[0m')
+
+    #print(f'\033[36m After credibility ...\033[0m')
     # Case #3: a score exists.
     # --> return descriptive score feedback
     # Declare score variables
@@ -152,15 +155,6 @@ def qualitative_feedback_covalent(
         msg = messages['success'].format(
             quality.upper(), points)
 
-        """
-        if rate == 0:
-            msg = msg.replace(f'0 MODE which is equivalent to ', '')
-
-        if ('loan_duedate' in list(feedback['stamina'].keys())):
-            payback = feedback['stamina']['loan_duedate']
-            msg = msg + \
-                f' over a recommended pay back period of {payback} monthly installments.'
-        """
 
         # Covalent account duration
         if ('longevity_days' in all_keys):
@@ -190,3 +184,70 @@ def qualitative_feedback_covalent(
             msg = msg + f'. An error occurred while computing the score metric called {err}. ' \
                 f'As a result, your score was rounded down. Try to log into MetaMask again later'
         return msg + '.'
+
+def generate_recommendations(feedback, score):
+    try:
+        recommendations = {
+            "credibility": [],
+            "wealth": [],
+            "traffic": [],
+            "stamina": []
+        }
+        
+        # Credibility recommendations
+        try:
+            longevity_days = feedback.get('credibility', {}).get('longevity_days', 0)
+            if longevity_days < 180:
+                recommendations["credibility"].append({
+                    "message": "Consider maintaining your wallet activity for a longer period to improve your credibility score.",
+                    "current_value": longevity_days,
+                    "target_value": 180
+                })
+        except KeyError as e:
+            logging.warning(f"KeyError in credibility recommendation: {str(e)}")
+        
+        # Wealth recommendations
+        try:
+            cum_balance_now = feedback.get('wealth', {}).get('cum_balance_now', 0)
+            if cum_balance_now < 1000:
+                recommendations["wealth"].append({
+                    "message": "Increasing your overall balance across cryptocurrencies could improve your wealth score.",
+                    "current_value": cum_balance_now,
+                    "target_value": 1000
+                })
+        except KeyError as e:
+            logging.warning(f"KeyError in wealth recommendation: {str(e)}")
+        
+        # Traffic recommendations
+        try:
+            txn_frequency = float(feedback.get('traffic', {}).get('txn_frequency', '0').split()[0])
+            if txn_frequency < 1:
+                recommendations["traffic"].append({
+                    "message": "Increasing the frequency of your transactions may improve your traffic score.",
+                    "current_value": txn_frequency,
+                    "target_value": 1
+                })
+        except (KeyError, ValueError) as e:
+            logging.warning(f"Error in traffic recommendation: {str(e)}")
+        
+        # Stamina recommendations
+        try:
+            coins_count = feedback.get('stamina', {}).get('coins_count', 0)
+            if coins_count < 3:
+                recommendations["stamina"].append({
+                    "message": "Holding a wider variety of cryptocurrencies could enhance your stamina score.",
+                    "current_value": coins_count,
+                    "target_value": 3
+                })
+        except KeyError as e:
+            logging.warning(f"KeyError in stamina recommendation: {str(e)}")
+        
+        # Convert to JSON string
+        # recommendations_json = json.dumps(recommendations, indent=2)
+        
+        return recommendations
+    
+    except Exception as e:
+        logging.error(f"Unexpected error in generate_recommendations: {str(e)}")
+        return json.dumps({"error": "An unexpected error occurred while generating recommendations."}) 
+

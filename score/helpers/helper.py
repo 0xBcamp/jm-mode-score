@@ -146,3 +146,42 @@ def validate_data(data, data_type):
         elif data_type == 'balance':
             if 'quote' not in item or not isinstance(item['quote'], (int, float)):
                 item['quote'] = 0  # Set a default value
+
+
+def get_staking_data(balances):
+    staking_data = {
+        'total_staked': 0,
+        'staked_tokens': []
+    }
+    
+    for item in balances.get('items', []):
+        if item.get('type') == 'staked':  # You might need to adjust this condition based on how Covalent identifies staked tokens
+            staking_data['total_staked'] += item['balance'] * item['quote_rate']
+            staking_data['staked_tokens'].append({
+                'contract_address': item['contract_address'],
+                'symbol': item['contract_ticker_symbol'],
+                'amount': item['balance'],
+                'quote': item['quote']
+            })
+    
+    return staking_data
+
+def get_yield_farming_data(transactions):
+    yield_farming_data = {
+        'total_returns': 0,
+        'yield_events': []
+    }
+    
+    for tx in transactions.get('items', []):
+        for log in tx.get('log_events', []):
+            if log.get('decoded', {}).get('name') == 'staked':  # You might need to adjust this condition based on the specific yield farming protocols you're interested in
+                amount = int(log['decoded']['params'][0]['value']) / 10**18  # Assuming 18 decimal places, adjust if necessary
+                yield_farming_data['total_returns'] += amount
+                yield_farming_data['yield_events'].append({
+                    'tx_hash': tx['tx_hash'],
+                    'block_height': tx['block_height'],
+                    'amount': amount,
+                    'token_address': log['sender_address']
+                })
+    
+    return yield_farming_data

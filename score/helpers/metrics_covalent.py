@@ -390,6 +390,26 @@ def wealth_volume_per_txn(txn, feedback, params):
         return score, feedback
 
 
+def wealth_staking_balance(staking_data, feedback, params):
+    try:
+        staked_balance = sum([token['balance'] * token['quote_rate'] for token in staking_data if token.get('type') == 'staked'])
+        score = params['fico_medians'][np.digitize(staked_balance, params['staking_balance'], right=True)]
+        feedback['wealth']['staking_balance'] = round(staked_balance, 2)
+    except Exception as e:
+        score = 0
+        feedback['wealth']['staking_error'] = str(e)
+    return score, feedback
+
+def wealth_yield_farming_returns(yield_data, feedback, params):
+    try:
+        yield_returns = sum([event['value'] for event in yield_data if event['event_name'] == 'Harvest'])
+        score = params['fico_medians'][np.digitize(yield_returns, params['yield_farming_returns'], right=True)]
+        feedback['wealth']['yield_farming_returns'] = round(yield_returns, 2)
+    except Exception as e:
+        score = 0
+        feedback['wealth']['yield_farming_error'] = str(e)
+    return score, feedback
+
 # -------------------------------------------------------------------------- #
 #                             Metric #3 Traffic                              #
 # -------------------------------------------------------------------------- #
@@ -734,34 +754,3 @@ def stamina_dexterity(portfolio, feedback, params):
     finally:
         return score, feedback
 
-
-def stamina_loan_duedate(txn, feedback, params):
-    '''
-    Description:
-        returns how many months it'll take the user to pay back their loan
-
-    Parameters:
-        txn (list): transactions history for an ETH wallet address
-        feedback (dict): score feedback
-        due_date (array): bins for the number of months it'll take a user to pay back a loan
-
-    Returns:
-        feedback (dict): score feedback with a new key-value pair 'loan_duedate':float (# of months in range [3,6])
-    '''
-    try:
-        # Read in the date of the oldest txn
-        oldest_txn = datetime.strptime(
-            txn['items'][-1]['block_signed_at'], '%Y-%m-%dT%H:%M:%SZ').date()
-        txn_length = int((NOW - oldest_txn).days/30)  # months
-
-        # Loan duedate is equal to the month of txn history there are
-        due = np.digitize(txn_length, params['due_date'], right=True)
-        how_many_months = np.append(params['due_date'], 6)
-
-        feedback['stamina']['loan_duedate'] = how_many_months[due]
-
-    except Exception as e:
-        feedback['stamina']['error'] = str(e)
-
-    finally:
-        return feedback

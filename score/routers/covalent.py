@@ -63,7 +63,7 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
         txn = covalent_get_transactions(
             item.chainid, item.eth_address, item.covalent_key, False, 500, 0)
 
-        # with open('covalent_get_transactions.json', 'w') as file:
+        #with open('covalent_get_transactions.json', 'w') as file:
         #    json.dump(txn, file, indent=2)
         
         if isinstance(txn, dict) and 'found_error' in txn and txn['found_error']:
@@ -74,7 +74,7 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
             item.chainid, item.eth_address, 'balances_v2', item.
             covalent_key)
         
-        # with open('covalent_get_balances_or_portfolio.json', 'w') as file:
+        #with open('covalent_get_balances_or_portfolio.json', 'w') as file:
         #   json.dump(balances, file, indent=2)
         
         if isinstance(balances, dict) and 'found_error' in balances and balances['found_error']:
@@ -86,6 +86,14 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
         if isinstance(portfolio, dict) and 'found_error' in portfolio and portfolio['found_error']:
             error = portfolio['error_message']
             raise Exception(f'Unable to fetch portfolio data: {error}')
+        
+        # After fetching txn, balances, and portfolio data...
+        # Get staking data
+        # staking_data = get_staking_data(balances)
+
+        # Get yield farming data
+        # yield_farming_data = get_yield_farming_data(txn)
+
 
         # coinmarketcap
         print(f'\033[36m Connecting with Coinmarketcap ...\033[0m')
@@ -112,6 +120,9 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
         feedback = interpret_score_covalent(
             score, feedback, score_range, qualitative_range)
 
+        print(f'\033[36m Preparing Recommendation ...\033[0m')
+        recommendations = generate_recommendations(feedback, score)
+
         # return success
         print(f'\033[35;1m Credit score has successfully been calculated.\033[0m')
         response_data = {
@@ -120,7 +131,8 @@ async def credit_score_covalent(request: Request, item: Covalent_Item, db: Sessi
             'score': int(score),
             'message': message,
             'feedback': feedback,
-            'explanation': understandableFeedback
+            'explanation': understandableFeedback,
+            'recommendations': recommendations
         }
         return JSONResponse(content=response_data)
         '''
